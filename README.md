@@ -1,22 +1,48 @@
-private static BingoBall? BinarySearchBall(BingoBall[] ballArray, int value, int start, int end)
+private static void AddValue(Node root, int value)
 {
-    while (start <= end)
-    {
-        int mid = (start + end) / 2;
+    // Se root è null in teoria dovresti assegnare al tree.Root,
+    // ma visto che questo metodo viene chiamato solo con tree.Root già creato,
+    // gestiamo solo i figli.
 
-        if (ballArray[mid].Number == value)
+    if (value < root.Value)
+    {
+        // Vai a sinistra
+        if (root.Left == null)
         {
-            return ballArray[mid];
-        }
-        else if (ballArray[mid].Number < value)
-        {
-            start = mid + 1;   // cerca a destra
+            root.Left = new Node(value);
         }
         else
         {
-            end = mid - 1;     // cerca a sinistra
+            AddValue(root.Left, value);
         }
     }
+    else if (value > root.Value)
+    {
+        // Vai a destra
+        if (root.Right == null)
+        {
+            root.Right = new Node(value);
+        }
+        else
+        {
+            AddValue(root.Right, value);
+        }
+    }
+    else
+    {
+        // Value già presente — non fare nulla (dipende da progetto)
+    }
+}
+public static Node? FindValue(Node root, int value)
+{
+    if (root == null)
+        return null;
 
-    return null; // non trovato
+    if (value == root.Value)
+        return root;
+
+    if (value < root.Value)
+        return FindValue(root.Left, value);
+
+    return FindValue(root.Right, value);
 }
